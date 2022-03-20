@@ -94,15 +94,15 @@ module.exports = function (api) {
 
 In the file: node_modules\react-navigation-drawer\lib\module\views\Drawer.js and replace interpolate with interpolateNode. It is in two places.
 -------------------------------------
+npm install formik
+npm install yup
+-------------------------------------
 
 Restart application:
 --------------------
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 expo start --tunnel
 
-
-
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-expo doctor --fix-dependencies
-
-npm install formik
-npm install yup
+----------------------------------------
+DON'T DO: expo doctor --fix-dependencies
+----------------------------------------
