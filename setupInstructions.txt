@@ -102,6 +102,7 @@ npm install @react-navigation/native
 npm install @react-navigation/stack
 npm install @react-navigation/bottom-tabs
 npm install react-native-vector-icons
+npm install @react-navigation/stack
 -------------------------------------
 
 Restart application:
