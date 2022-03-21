@@ -21,7 +21,7 @@ export default function MainContainer({ navigation }) {
   return(
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName={homeName}
+        initialRouteName={'homeName'}
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
@@ -39,8 +39,8 @@ export default function MainContainer({ navigation }) {
             }
             return <Ionicons name={iconName} size={size} color={color} />
           },
-          tabBarActiveTintColor:'tomato',
-          tabBarInactiveTintColor:'grey',
+          tabBarActiveTintColor:'#3cf',
+          tabBarInactiveTintColor:'#9a9aaa',
           tabBarLabelStyle: { paddingBottom:10, fontSize:10 },
           tabBarStyle: { display:'flex', padding:10, height:70},
         })}
