@@ -1,7 +1,7 @@
-import React from 'react';
-import Home from './screens/home';
+import React, { useState } from 'react';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import MainContainer from './navigation/mainContainer';
 
 const getFonts = () => Font.loadAsync({
   'anodiam-regular': require('./assets/fonts/Oxygen-Regular.ttf'),
@@ -15,7 +15,7 @@ const [fontsLoaded, setFontsLoaded] = useState(false);
 
   if(fontsLoaded) {
     return (
-      <Home/>
+      <MainContainer/>
     );
   } else {
     return (
