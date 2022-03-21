@@ -96,6 +96,11 @@ In the file: node_modules\react-navigation-drawer\lib\module\views\Drawer.js and
 -------------------------------------
 npm install formik
 npm install yup
+npm install react-native-screens
+npm install @react-native-community/masked-view
+npm install @react-navigation/native
+npm install @react-navigation/stack
+npm install @react-navigation/bottom-tabs
 -------------------------------------
 
 Restart application:
