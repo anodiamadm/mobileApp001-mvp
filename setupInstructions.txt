@@ -104,6 +104,11 @@ module.exports = function (api) {
 In the file: node_modules\react-navigation-drawer\lib\module\views\Drawer.js and replace interpolate with interpolateNode. It is in two places.
 -------------------------------------
 
+On top off app.js
+------------------
+import 'react-native-gesture-handler';
+-------------------------------------
+
 Restart application:
 --------------------
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
