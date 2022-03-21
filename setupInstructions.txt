@@ -94,15 +94,21 @@ module.exports = function (api) {
 
 In the file: node_modules\react-navigation-drawer\lib\module\views\Drawer.js and replace interpolate with interpolateNode. It is in two places.
 -------------------------------------
+npm install formik
+npm install yup
+npm install react-native-screens
+npm install @react-native-community/masked-view
+npm install @react-navigation/native
+npm install @react-navigation/stack
+npm install @react-navigation/bottom-tabs
+npm install react-native-vector-icons
+-------------------------------------
 
 Restart application:
 --------------------
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 expo start --tunnel
 
-
-
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-expo doctor --fix-dependencies
-
-npm install formik
-npm install yup
+----------------------------------------
+DON'T DO: expo doctor --fix-dependencies
+----------------------------------------
