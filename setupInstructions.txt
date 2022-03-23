@@ -103,11 +103,10 @@ module.exports = function (api) {
 
 In the file: node_modules\react-navigation-drawer\lib\module\views\Drawer.js and replace interpolate with interpolateNode. It is in two places.
 -------------------------------------
-
-#On top off app.js
-#------------------
-#import 'react-native-gesture-handler';
-#-------------------------------------
+npm install expo-cli --global
+expo install expo-linear-gradient
+npm install react-native-vector-icons --save
+npm install react-native-animatable --save
 
 Restart application:
 --------------------
