@@ -64,7 +64,7 @@ export default function ProfileDrawerContent(props) {
                 <FontAwesome5
                   name='user-friends'
                   color={color}
-                  size={size}
+                  size={size-5}
                 />
               )}
               label='My Friends'

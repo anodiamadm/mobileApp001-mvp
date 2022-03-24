@@ -49,6 +49,10 @@ export default function SignInScreen({ navigation }) {
     });
   }
 
+  const loginHandle = (username, password) => {
+    signIn(username, password);
+  }
+
   return (
     <View style={styles.containerSignIn}>
       <StatusBar backgroundColor='#6098d8' barStyle='light-content' />
@@ -118,7 +122,7 @@ export default function SignInScreen({ navigation }) {
 
           <View style={styles.button}>
             <TouchableOpacity
-              onPress={()=>{signIn()}}
+              onPress={()=>{loginHandle(data.email, data.password)}}
               style={[styles.signIn, {
                 borderColor: '#1af',
                 borderWidth: 1,
