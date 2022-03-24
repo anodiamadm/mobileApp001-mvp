@@ -31,7 +31,7 @@ export default function App() {
       setUserToken('sw21x3452herfhergvnfnverh');
       setIsLoading(false);
     },
-  }));
+  }), []);
   
   useEffect(() => {
     setTimeout(() => {

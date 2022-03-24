@@ -11,9 +11,6 @@ export default RootStackScreen = ({ navigation }) => {
     <RootStack.Navigator
       screenOptions={({route}) => ({
         headerStyle: { height: 0 },
-    //    headerTintColor: '#eef6fd',
-      //  headerTitleStyle: { fontFamily: 'anodiam-regular', fontSize: 16, fontWeight: 'regular', },
-        //headerTitleAlign: 'center',
       })}
     >
       <RootStack.Screen name='SplashScreen' component={SplashScreen}/>

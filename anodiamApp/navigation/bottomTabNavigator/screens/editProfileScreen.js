@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StatusBar, } from 'react-native';
-import { globalStyles } from '../../styles/global';
+import { globalStyles } from '../../../styles/global';
 
-export default function EditProfile({ navigation }) {
+export default function EditProfileScreen({ navigation }) {
 
   return (
     <View style={globalStyles.container}>

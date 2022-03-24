@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { AuthContext } from '../../components/context';
 
 export default function ProfileDrawerContent(props) {
+
+  const [isCuteTheme, setIsCuteTheme] = useState(false);
+
+  const { signOut } = useContext(AuthContext);
+
+  const toggleTheme = () => {
+    setIsCuteTheme(!isCuteTheme);
+  }
+
   return (
     <View style={{ flex:1 }}>
       <DrawerContentScrollView {...props}>
@@ -34,7 +48,60 @@ export default function ProfileDrawerContent(props) {
             </View>
           </View>
           <Drawer.Section style={styles.drawerSection}>
-
+            <DrawerItem
+              icon={({color, size}) => (
+                <SimpleLineIcons
+                  name='badge'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label='My Achievements'
+              onPress={()=>{props.navigation.navigate('MyAchievementsScreen')}}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <FontAwesome5
+                  name='user-friends'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label='My Friends'
+              onPress={()=>{props.navigation.navigate('MyFriendsScreen')}}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <Feather
+                  name='dollar-sign'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label='My Scholarships'
+              onPress={()=>{props.navigation.navigate('MyScholarshipsScreen')}}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <AntDesign
+                  name='copyright'
+                  color={color}
+                  size={size}
+                />
+              )}
+              label='About Anodiam'
+              onPress={()=>{props.navigation.navigate('AboutAnodiamScreen')}}
+            />
+          </Drawer.Section>
+          <Drawer.Section title="Preferences">
+            <TouchableRipple onPress={()=>{toggleTheme()}}>
+              <View style={styles.preference}>
+                <Text>Cute Theme</Text>
+                <View pointerEvents="none">
+                  <Switch value={isCuteTheme} />
+                </View>
+              </View>
+            </TouchableRipple>
           </Drawer.Section>
         </View>
       </DrawerContentScrollView>
@@ -44,7 +111,7 @@ export default function ProfileDrawerContent(props) {
             <Icon name='exit-to-app' color={color} size={size} />
           )}
           label='Sign Out'
-          onPress={()=> {}}
+          onPress={()=> {signOut()}}
         />
       </Drawer.Section>
     </View>
