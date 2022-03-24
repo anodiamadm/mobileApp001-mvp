@@ -6,12 +6,19 @@ import SignUpScreen from './screens/signUpScreen';
 
 const RootStack = createStackNavigator();
 
-const RootStackScreen = ({ navigation }) => {
+export default RootStackScreen = ({ navigation }) => {
   return (
-    <RootStack.Navigator hearderMode='none'>
-      <RootStack.Screen name='SplashScreen' component={SplashScreen} />
-      <RootStack.Screen name='SignInScreen' component={SignInScreen} />
-      <RootStack.Screen name='SignUpScreen' component={SignUpScreen} />
+    <RootStack.Navigator
+      screenOptions={({route}) => ({
+        headerStyle: { height: 0 },
+    //    headerTintColor: '#eef6fd',
+      //  headerTitleStyle: { fontFamily: 'anodiam-regular', fontSize: 16, fontWeight: 'regular', },
+        //headerTitleAlign: 'center',
+      })}
+    >
+      <RootStack.Screen name='SplashScreen' component={SplashScreen}/>
+      <RootStack.Screen name='SignUpScreen' component={SignUpScreen}/>
+      <RootStack.Screen name='SignInScreen' component={SignInScreen}/>
     </RootStack.Navigator>
   )
 };

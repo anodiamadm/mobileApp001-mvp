@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import { globalStyles } from '../../../styles/global';
 
 export default function DashboardScreen({ navigation }) {
   
   return (
     <View style={globalStyles.container}>
+      <StatusBar backgroundColor='#6098d8' barStyle='light-content' />
       <Text
         onPress={() => alert('This is the Dashboard Screen')}
         style={globalStyles.titleText4}

@@ -1,15 +1,22 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { globalStyles } from '../../../styles/global';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import EditProfileScreen from '../../../DrawerNavigator/Screens/editProfileScreen';
+import SignOutScreen from '../../../DrawerNavigator/Screens/signOutScreen';
+import ProfileDrawerContent from '../../../DrawerNavigator/Screens/profileDrawerContent';
 
 export default function ProfileScreen({ navigation }) {
-  
+
+  const Drawer = createDrawerNavigator();
+
   return (
-    <View style={globalStyles.container}>
-      <Text
-        onPress={() => alert('This is the Profile Screen')}
-        style={globalStyles.titleText4}
-      >Profile Screen</Text>
-    </View>
+    <Drawer.Navigator initialRouteName='EditProfile' screenOptions={{
+        headerTintColor: '#6098d8',
+        headerTitleAlign: 'center'
+      }}
+      drawerContent={props => <ProfileDrawerContent {...props} />}
+    >
+      <Drawer.Screen name='Student Profile' component={EditProfileScreen} />
+      <Drawer.Screen name='SignOut' component={SignOutScreen} />
+    </Drawer.Navigator>
   )
 }

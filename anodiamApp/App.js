@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import RootStackScreen from './navigation/rootStackNavigator/rootStackScreen';
-
-import MainContainer from './navigation/bottomTabNavigator/mainContainer';
+import MainContainerScreen from './navigation/bottomTabNavigator/mainContainer';
+import { NavigationContainer } from '@react-navigation/native';
+import { AuthContext } from './components/context';
 
 const getFonts = () => Font.loadAsync({
   'anodiam-regular': require('./assets/fonts/Oxygen-Regular.ttf'),
@@ -11,14 +13,52 @@ const getFonts = () => Font.loadAsync({
   'anodiam-light': require('./assets/fonts/Oxygen-Light.ttf')
 });
 
-
 export default function App() {
-const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState(null);
+
+  const authContext = useMemo(() => ({
+    signIn: () => {
+      setUserToken('sw21x3452herfhergvnfnverh');
+      setIsLoading(false);
+    },
+    signOut: () => {
+      setUserToken(null);
+      setIsLoading(false);
+    },
+    signUp: () => {
+      setUserToken('sw21x3452herfhergvnfnverh');
+      setIsLoading(false);
+    },
+  }));
+  
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+
+  if( isLoading ) {
+    return(
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   if(fontsLoaded) {
     return (
-//      <MainContainer/>
-      <RootStackScreen/>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          { userToken != null ?
+            <MainContainerScreen/>
+          :
+            <RootStackScreen/>
+          }
+        </NavigationContainer>
+      </AuthContext.Provider>
     );
   } else {
     return (

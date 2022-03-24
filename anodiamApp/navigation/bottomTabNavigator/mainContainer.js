@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './screens/homeScreen';
@@ -19,40 +18,39 @@ const Tab = createBottomTabNavigator();
 
 export default function MainContainer({ navigation }) {
   return(
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName={'homeName'}
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-            let routeName = route.name;
-            if (routeName === homeName) {
-              iconName = focused ? 'home' : 'home-outline'
-            } else if (routeName === cartName) {
-              iconName = focused ? 'cart' : 'cart-outline'
-            } else if (routeName === myStudiesName) {
-              iconName = focused ? 'book' : 'book-outline'
-            } else if (routeName === dashboardName) {
-              iconName = focused ? 'speedometer' : 'speedometer-outline'
-            } else if (routeName === profileName) {
-              iconName = focused ? 'person-circle' : 'person-circle-outline'
-            }
-            return <Ionicons name={iconName} size={size} color={color} />
-          },
-          tabBarActiveTintColor:'#3cf',
-          tabBarInactiveTintColor:'#9a9aaa',
-          tabBarLabelStyle: { paddingBottom:10, fontSize:10 },
-          tabBarStyle: { display:'flex', padding:10, height:70},
-        })}
-      >
+    <Tab.Navigator
+      initialRouteName={'homeName'}
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+          let routeName = route.name;
+          if (routeName === homeName) {
+            iconName = focused ? 'home' : 'home-outline'
+          } else if (routeName === cartName) {
+            iconName = focused ? 'cart' : 'cart-outline'
+          } else if (routeName === myStudiesName) {
+            iconName = focused ? 'book' : 'book-outline'
+          } else if (routeName === dashboardName) {
+            iconName = focused ? 'speedometer' : 'speedometer-outline'
+          } else if (routeName === profileName) {
+            iconName = focused ? 'person-circle' : 'person-circle-outline'
+          }
+          return <Ionicons name={iconName} size={size} color={color} />
+        },
+        tabBarActiveTintColor:'#3cf',
+        tabBarInactiveTintColor:'#9a9aaa',
+        tabBarLabelStyle: { paddingBottom:10, fontSize:10 },
+        tabBarStyle: { display:'flex', padding:10, height:70},
+        headerStyle: { height: 0 },
+      })}
+    >
 
-      <Tab.Screen name={homeName} component={HomeScreen} />
-      <Tab.Screen name={cartName} component={CartScreen} />
-      <Tab.Screen name={myStudiesName} component={MyStudiesScreen} />
-      <Tab.Screen name={dashboardName} component={DashboardScreen} />
-      <Tab.Screen name={profileName} component={ProfileScreen} />
+    <Tab.Screen name={homeName} component={HomeScreen} />
+    <Tab.Screen name={cartName} component={CartScreen} />
+    <Tab.Screen name={myStudiesName} component={MyStudiesScreen} />
+    <Tab.Screen name={dashboardName} component={DashboardScreen} />
+    <Tab.Screen name={profileName} component={ProfileScreen} />
 
-      </Tab.Navigator>
-    </NavigationContainer>
+    </Tab.Navigator>
   )
 }
