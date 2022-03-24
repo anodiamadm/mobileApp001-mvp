@@ -107,6 +107,8 @@ npm install expo-cli --global
 expo install expo-linear-gradient
 npm install react-native-vector-icons --save
 npm install react-native-animatable --save
+npm install @react-navigation/drawer
+npm install react-native-paper
 
 Restart application:
 --------------------
