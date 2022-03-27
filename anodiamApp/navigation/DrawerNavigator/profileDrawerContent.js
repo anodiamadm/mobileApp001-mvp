@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,6 +17,7 @@ export default function ProfileDrawerContent(props) {
 
   const toggleTheme = () => {
     setIsCuteTheme(!isCuteTheme);
+    Alert.alert('Cute Pink Theme','This functionality will be available soon!');
   }
 
   return (

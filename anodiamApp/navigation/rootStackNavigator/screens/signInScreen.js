@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar,
-          TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+          TextInput, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -14,7 +14,9 @@ export default function SignInScreen({ navigation }) {
     email: '',
     password: '',
     check_textInputChange: false,
-    secureTextEntry: true
+    secureTextEntry: true,
+    isValidEmail: true,
+    isValidPassword: true,
   });
 
   const { signIn } = useContext(AuthContext);
@@ -49,6 +51,20 @@ export default function SignInScreen({ navigation }) {
     });
   }
 
+  const handleValidEmail = (val) => {
+    if(val.trim().length >= 4) {
+      setData({
+        ...data,
+        isValidEmail: true,
+      });
+    } else {
+      setData({
+        ...data,
+        isValidEmail: false,
+      });
+    }
+  }
+
   const loginHandle = (username, password) => {
     signIn(username, password);
   }
@@ -76,6 +92,7 @@ export default function SignInScreen({ navigation }) {
               style={styles.textInput}
               autoCapitalize="none"
               onChangeText={(val)=>textInputChange(val)}
+              onEndEditing={(e)=>handleValidEmail(e.nativeEvent.text)}
             />
             {data.check_textInputChange ?
             <Animatable.View animation="bounceIn">
@@ -87,6 +104,11 @@ export default function SignInScreen({ navigation }) {
             </Animatable.View>
             : null}
           </View>
+          { data.isValidEmail ? null : 
+            <Animatable.View animation="fadeInLeft" duration={500} >
+              <Text style={styles.errorMsg}>Not a valid email!</Text>
+            </Animatable.View>
+          }
           <Text style={[styles.text_footer, { marginTop: 35 }]}>Password</Text>
           <View style={styles.action}>
             <FontAwesome
@@ -119,7 +141,11 @@ export default function SignInScreen({ navigation }) {
               }
             </TouchableOpacity>
           </View>
-
+          { data.isValidEmail ? null : 
+            <Animatable.View animation="fadeInLeft" duration={500} >
+              <Text style={styles.errorMsg}>Not a valid password!</Text>
+            </Animatable.View>
+          }
           <View style={styles.button}>
             <TouchableOpacity
               onPress={()=>{loginHandle(data.email, data.password)}}
@@ -152,7 +178,7 @@ export default function SignInScreen({ navigation }) {
             <TouchableOpacity>
               <Text
                 style={[globalStyles.specialText4, {marginTop: 25}]}
-                onPress={()=>alert('Change/Forget password clicked')}
+                onPress={()=>Alert.alert('Change/Forget Password','This functionality will be available soon!')}
               >Change/Forgot Password</Text>
             </TouchableOpacity>
           </View>
@@ -219,5 +245,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontFamily: 'anodiam-bold',
+  },
+  errorMsg: {
+    fontFamily: 'anodiam-regular',
+    color: 'crimson',
+    fontSize: 12,
   }
 });

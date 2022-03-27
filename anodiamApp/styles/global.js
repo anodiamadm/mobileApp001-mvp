@@ -118,4 +118,8 @@ export const globalStyles = StyleSheet.create ({
     borderRadius: 8,
     borderBottomColor: '#b4c8e8'
   },
+  errorMessage: {
+    color: 'crimson',
+    fontSize: 10,
+  }
 })
