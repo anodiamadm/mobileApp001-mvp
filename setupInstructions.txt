@@ -105,6 +105,9 @@ module.exports = function (api) {
 };
 -------------------------------------
 
+npm install formik
+npm install yup
+
 Restart application:
 --------------------
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass

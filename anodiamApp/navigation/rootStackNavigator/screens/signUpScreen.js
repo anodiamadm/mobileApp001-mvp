@@ -7,67 +7,31 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
 import { globalStyles } from '../../../styles/global';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
+const signUpSchema = yup.object({
+  email: yup.string()
+          .email('Invalid email format')
+          .required('Email address is required'),
+  inviter_email: yup.string()
+          .email('Invalid email format')
+          .notOneOf([yup.ref('email')], 'You cannot be your own inviter.'),
+  password: yup.string()
+          .required('Password is required')
+          .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+            "Minimum 6 Chars, Uppercase, Lowercase, Number & Special Char"
+          ),
+  confirm_password: yup.string()
+          .required('Please retype your password.')
+          .oneOf([yup.ref('password')], 'Confirm password does not match.'),
+})
 
 export default function SignUpScreen({ navigation }) {
 
-  // const [data, setData] = useState({
-  //   email: '',
-  //   password: '',
-  //   confirm_password: '',
-  //   check_textInputChange: false,
-  //   secureTextEntry: true,
-  //   confirm_secureTextEntry: true,
-  //   isValidEmailFormat: true,
-  //   isValidEmail: true,
-  //   isValidInviterEmailFormat: true,
-  //   isValidInviterEmail: true,
-  //   isValidPassword: true,
-  //   isValidConfirmPassword: true,
-  // });
-
-  // const textInputChange = (val) => {
-  //   if(val.length != 0) {
-  //     setData({
-  //       ...data,
-  //       email: val,
-  //       check_textInputChange: true,
-  //     })
-  //   } else {
-  //     setData({
-  //       ...data,
-  //       email: val,
-  //       check_textInputChange: false,
-  //     })
-  //   }
-  // };
-
-  // const handlePasswordChange = (val) => {
-  //   setData({
-  //       ...data,
-  //       password: val,
-  //   });
-  // }
-
-  // const handleConfirmPasswordChange = (val) => {
-  //   setData({
-  //       ...data,
-  //       confirm_password: val,
-  //   });
-  // }
-
-  // const updateSecureTextEntry = () => {
-  //   setData({
-  //       ...data,
-  //       secureTextEntry: !data.secureTextEntry,
-  //   });
-  // }
-
-  // const updateConfirmSecureTextEntry = () => {
-  //   setData({
-  //       ...data,
-  //       confirm_secureTextEntry: !data.confirm_secureTextEntry,
-  //   });
-  // }
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <View style={styles.containerSignIn}>
@@ -75,201 +39,188 @@ export default function SignUpScreen({ navigation }) {
       <View style={styles.header}>
         <Text style={styles.text_header}>Register Now!</Text>
       </View>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Animatable.View
-          animation="fadeInUpBig"
-          style={styles.footer}
-        >
-          <View style={{flexDirection: 'row'}}>
-            <Text style={styles.text_footer}>Your Email</Text>
-            <TouchableOpacity style={styles.balloonQuestion} onPress={()=>{Alert.alert('Help:', 'Please provide your valid email address.\n- All communications from Anodiam will be through this email.\n- Also, this is going to be your user name in Anodiam.')}}>
-              <FontAwesome
-                name="question-circle"
-                color="#6098d8"
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.action}>
-            <FontAwesome
-              name="user-o"
-              color="#000830"
-              size={20}
-            />
-            <TextInput
-              placeholder='you@email.com'
-              style={styles.textInput}
-              autoCapitalize="none"
-//              onChangeText={(val)=>textInputChange(val)}
-            />
-            {data.check_textInputChange ?
-            <Animatable.View animation="bounceIn">
-              <Feather
-                name='check-circle'
-                color='green'
-                size={20}
-              />
-            </Animatable.View>
-            : null}
-          </View>
-          {/* { data.isValidEmailFormat ? null :
-            <Animatable.View animation='fadeInLeft' duration={500}>
-              <Text style={globalStyles.errorMessage}>Invalid email format!</Text>
-            </Animatable.View>
-          }
-          { data.isValidEmail ? null :
-            <Animatable.View animation='fadeInLeft' duration={500}>
-              <Text style={globalStyles.errorMessage}>Email already registered with Anodiam!</Text>
-            </Animatable.View>
-          } */}
-          <View style={{flexDirection: 'row', marginTop: 30}}>
-            <Text style={styles.text_footer}>Inviter's Email</Text>
-            <TouchableOpacity style={styles.balloonQuestion} onPress={()=>{Alert.alert('Help:', 'Enter the exact email address of the person who invited you to Anodiam.\n- Both of you will get benefits!')}}>
-              <FontAwesome
-                name="question-circle"
-                color="#6098d8"
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>  
-          <View style={styles.action}>
-            <AntDesign
-              name="team"
-              color="#000830"
-              size={20}
-            />
-            <TextInput
-              placeholder='friend@email.com'
-              style={styles.textInput}
-              autoCapitalize="none"
-//              onChangeText={(val)=>textInputChange(val)}
-            />
-            {/* {data.check_textInputChange ?
-            <Animatable.View animation="bounceIn">
-              <Feather
-                name='check-circle'
-                color='green'
-                size={20}
-              />
-            </Animatable.View>
-            : null} */}
-          </View>
-          {/* { data.isValidInviterEmailFormat ? null :
-            <Animatable.View animation='fadeInLeft' duration={500}>
-              <Text style={globalStyles.errorMessage}>Invalid email format!</Text>
-            </Animatable.View>
-          }
-          { data.isValidInviterEmail ? null :
-            <Animatable.View animation='fadeInLeft' duration={500}>
-              <Text style={globalStyles.errorMessage}>Email not registered with Anodiam!</Text>
-            </Animatable.View>
-          } */}
-          <View style={{flexDirection: 'row', marginTop: 30}}>
-            <Text style={styles.text_footer}>Password</Text>
-            <TouchableOpacity style={styles.balloonQuestion} onPress={()=>{Alert.alert('Help:', 'Eight (8) or more characters.\n- Letters (a-z, A-Z)\n- Numerals (0-9)\n- Special characters (@,#,$,%,^,&,+,=)')}}>
-              <FontAwesome
-                name="question-circle"
-                color="#6098d8"
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.action}>
-            <FontAwesome
-              name="lock"
-              color="#000830"
-              size={20}
-            />
-            <TextInput
-              placeholder='Your Password'
-              secureTextEntry={data.secureTextEntry ? true : false}
-              style={styles.textInput}
-              autoCapitalize="none"
-//              onChangeText={(val)=>handlePasswordChange(val)}
-            />
-            <TouchableOpacity
-              onPress={updateSecureTextEntry}
+      <Formik
+        initialValues={{ email: '', inviter_email: '', password: '', confirm_password: '' }}
+        validationSchema={signUpSchema}
+        onSubmit={(values)=>{
+        console.log('Values = ', values);
+        }}
+      >
+        {(props) => (
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Animatable.View
+              animation="fadeInUpBig"
+              style={styles.footer}
             >
-              {/* {data.secureTextEntry ? 
-                <Feather
-                  name='eye'
-                  color='grey'
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.text_footer}>Your Email</Text>
+                <TouchableOpacity style={styles.balloonQuestion} onPress={()=>{Alert.alert('Help:', 'Please provide your permanent email address.\n- All communications from Anodiam will be through this email.\n- Also, this is going to be used as your username in Anodiam.')}}>
+                  <FontAwesome
+                    name="question-circle"
+                    color="#6098d8"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="user-o"
+                  color="#000830"
                   size={20}
                 />
-                :
-                <Feather
-                  name='eye-off'
-                  color='grey'
+                <TextInput
+                  placeholder='you@email.com'
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  onChangeText={props.handleChange('email')}
+                  value={props.values.email}
+                  onBlur={props.handleBlur.email}
+                />
+              </View>
+              <Text style={globalStyles.errorMessage}>{ props.touched.email && props.errors.email }</Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.text_footer}>Inviter's Email</Text>
+                <TouchableOpacity style={styles.balloonQuestion} onPress={()=>{Alert.alert('Help:', 'Enter the exact email address of the person who invited you to Anodiam.\n- Both of you will get benefits!')}}>
+                  <FontAwesome
+                    name="question-circle"
+                    color="#6098d8"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>  
+              <View style={styles.action}>
+                <AntDesign
+                  name="team"
+                  color="#000830"
                   size={20}
                 />
-              } */}
-            </TouchableOpacity>
-          </View>
-          {/* { data.isValidPassword ? null :
-            <Animatable.View animation='fadeInLeft' duration={500}>
-              <Text style={globalStyles.errorMessage}>Invalid password!</Text>
+                <TextInput
+                  placeholder='friend@email.com'
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  onChangeText={props.handleChange('inviter_email')}
+                  value={props.values.inviter_email}
+                  onBlur={props.handleBlur.inviter_email}
+                />
+              </View>
+              <Text style={globalStyles.errorMessage}>{ props.touched.inviter_email && props.errors.inviter_email }</Text>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={styles.text_footer}>Password</Text>
+                <TouchableOpacity style={styles.balloonQuestion} onPress={()=>{Alert.alert('Help:', 'Eight (8) or more characters.\n- Letters (a-z, A-Z)\n- Numerals (0-9)\n- Special characters (@,#,$,%,^,&,+,=)')}}>
+                  <FontAwesome
+                    name="question-circle"
+                    color="#6098d8"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="lock"
+                  color="#000830"
+                  size={20}
+                />
+                <TextInput
+                  placeholder='Your-Password'
+                  secureTextEntry={!showPassword}
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  onChangeText={props.handleChange('password')}
+                  value={props.values.password}
+                  onBlur={props.handleBlur.password}
+                />
+                <TouchableOpacity
+                  onPress={()=>{
+                    setShowPassword(!showPassword);
+                  }}
+                >
+                  {showPassword ? 
+                    <Feather
+                      name='eye-off'
+                      color='grey'
+                      size={20}
+                    />
+                    :
+                    <Feather
+                      name='eye'
+                      color='grey'
+                      size={20}
+                    />
+                  }
+                </TouchableOpacity>
+              </View>
+              <Text style={globalStyles.errorMessage}>{ props.touched.password && props.errors.password }</Text>
+              <Text style={[styles.text_footer, { marginTop: 10 }]}>Confirm Password</Text>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="lock"
+                  color="#000830"
+                  size={20}
+                />
+                <TextInput
+                  placeholder='Confirm-Your-Password'
+                  secureTextEntry={!showConfirmPassword}
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  onChangeText={props.handleChange('confirm_password')}
+                  value={props.values.confirm_password}
+                  onBlur={props.handleBlur.confirm_password}
+                />
+                <TouchableOpacity
+                  onPress={()=>{
+                    setShowConfirmPassword(!showConfirmPassword);
+                  }}
+                >
+                  {showConfirmPassword ? 
+                    <Feather
+                      name='eye-off'
+                      color='grey'
+                      size={20}
+                    />
+                    :
+                    <Feather
+                      name='eye'
+                      color='grey'
+                      size={20}
+                    />
+                  }
+                </TouchableOpacity>
+              </View>
+              <Text style={globalStyles.errorMessage}>{ props.touched.confirm_password && props.errors.confirm_password }</Text>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  style={[styles.signIn, {
+                    borderColor: '#1af',
+                    borderWidth: 1,
+                    marginTop: 5
+                  }]}
+                  onPress={props.handleSubmit}
+                >
+                  <LinearGradient
+                    colors={['#7ef', '#1af']}
+                    style={styles.signIn}
+                  >
+                    <Text style={styles.textSign}>SIGN UP</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={()=>navigation.navigate('SignInScreen')}
+                  style={[styles.signIn, {
+                    borderColor: '#1af',
+                    borderWidth: 1,
+                    marginTop: 10
+                  }]}
+                >
+                  <Text style={[styles.textSign, {
+                    color: '#1af'
+                  }]}
+                  >SIGN IN</Text>
+                </TouchableOpacity>
+              </View>
             </Animatable.View>
-          } */}
-          <Text style={[styles.text_footer, { marginTop: 30 }]}>Confirm Password</Text>
-          <View style={styles.action}>
-            <FontAwesome
-              name="lock"
-              color="#000830"
-              size={20}
-            />
-            <TextInput
-              placeholder='Confirm Your Password'
-              secureTextEntry={data.confirm_secureTextEntry ? true : false}
-              style={styles.textInput}
-              autoCapitalize="none"
-//              onChangeText={(val)=>handleConfirmPasswordChange(val)}
-            />
-            <TouchableOpacity
-              onPress={updateConfirmSecureTextEntry}
-            >
-              {/* {data.secureTextEntry ? 
-                <Feather
-                  name='eye'
-                  color='grey'
-                  size={20}
-                />
-                :
-                <Feather
-                  name='eye-off'
-                  color='grey'
-                  size={20}
-                />
-              } */}
-            </TouchableOpacity>
-          </View>
-          {/* { data.isValidConfirmPassword ? null :
-            <Animatable.View animation='fadeInLeft' duration={500}>
-              <Text style={globalStyles.errorMessage}>Confirm Password does not match!</Text>
-            </Animatable.View>
-          } */}
-          <View style={styles.button}>
-            <LinearGradient
-              colors={['#7ef', '#1af']}
-              style={styles.signIn}
-            >
-              <Text style={styles.textSign}>SIGN UP</Text>
-            </LinearGradient>
-            <TouchableOpacity
-              onPress={()=>navigation.navigate('SignInScreen')}
-              style={[styles.signIn, {
-                borderColor: '#1af',
-                borderWidth: 1,
-                marginTop: 20
-              }]}
-            >
-              <Text style={[styles.textSign, {
-                color: '#1af'
-              }]}
-              >SIGN IN</Text>
-            </TouchableOpacity>
-          </View>
-        </Animatable.View>
-      </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        )}
+      </Formik>
     </View>
   )
 }
@@ -286,7 +237,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   footer: {
-    flex: 3,
+    flex: 6,
     backgroundColor: '#eef6fd',
     borderTopLeftRadius: 45,
     borderTopRightRadius: 45,
@@ -318,7 +269,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 20,
   },
   signIn: {
     width: '100%',

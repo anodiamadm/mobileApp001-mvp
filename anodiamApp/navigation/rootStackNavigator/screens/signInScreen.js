@@ -7,67 +7,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Animatable from 'react-native-animatable';
 import { AuthContext } from '../../../components/context';
 import { globalStyles } from '../../../styles/global';
+import { Formik } from 'formik';
+
+const signInError = null;
 
 export default function SignInScreen({ navigation }) {
 
-  const [data, setData] = useState({
-    email: '',
-    password: '',
-    check_textInputChange: false,
-    secureTextEntry: true,
-    isValidEmail: true,
-    isValidPassword: true,
-  });
-
   const { signIn } = useContext(AuthContext);
-
-  const textInputChange = (val) => {
-    if(val.length != 0) {
-      setData({
-        ...data,
-        email: val,
-        check_textInputChange: true,
-      })
-    } else {
-      setData({
-        ...data,
-        email: val,
-        check_textInputChange: false,
-      })
-    }
-  };
-
-  const handlePasswordChange = (val) => {
-    setData({
-        ...data,
-        password: val,
-    });
-  }
-
-  const updateSecureTextEntry = () => {
-    setData({
-        ...data,
-        secureTextEntry: !data.secureTextEntry,
-    });
-  }
-
-  const handleValidEmail = (val) => {
-    if(val.trim().length >= 4) {
-      setData({
-        ...data,
-        isValidEmail: true,
-      });
-    } else {
-      setData({
-        ...data,
-        isValidEmail: false,
-      });
-    }
-  }
-
-  const loginHandle = (username, password) => {
-    signIn(username, password);
-  }
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <View style={styles.containerSignIn}>
@@ -75,115 +22,111 @@ export default function SignInScreen({ navigation }) {
       <View style={styles.header}>
         <Text style={styles.text_header}>Welcome!</Text>
       </View>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Animatable.View
-          animation="fadeInUpBig"
-          style={styles.footer}
-        >
-          <Text style={styles.text_footer}>Email</Text>
-          <View style={styles.action}>
-            <FontAwesome
-              name="user-o"
-              color="#000830"
-              size={20}
-            />
-            <TextInput
-              placeholder='you@email.com'
-              style={styles.textInput}
-              autoCapitalize="none"
-              onChangeText={(val)=>textInputChange(val)}
-              onEndEditing={(e)=>handleValidEmail(e.nativeEvent.text)}
-            />
-            {data.check_textInputChange ?
-            <Animatable.View animation="bounceIn">
-              <Feather
-                name='check-circle'
-                color='green'
-                size={20}
-              />
-            </Animatable.View>
-            : null}
-          </View>
-          { data.isValidEmail ? null : 
-            <Animatable.View animation="fadeInLeft" duration={500} >
-              <Text style={styles.errorMsg}>Not a valid email!</Text>
-            </Animatable.View>
-          }
-          <Text style={[styles.text_footer, { marginTop: 35 }]}>Password</Text>
-          <View style={styles.action}>
-            <FontAwesome
-              name="lock"
-              color="#000830"
-              size={20}
-            />
-            <TextInput
-              placeholder='Your Password'
-              secureTextEntry={data.secureTextEntry ? true : false}
-              style={styles.textInput}
-              autoCapitalize="none"
-              onChangeText={(val)=>handlePasswordChange(val)}
-            />
-            <TouchableOpacity
-              onPress={updateSecureTextEntry}
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        onSubmit={(values)=>{
+          signIn(values.email, values.password);
+        }}
+      >
+        {(props) => (
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Animatable.View
+              animation="fadeInUpBig"
+              style={styles.footer}
             >
-              {data.secureTextEntry ? 
-                <Feather
-                  name='eye'
-                  color='grey'
+              <Text style={{fontSize: 14, fontFamily: 'anodiam-bold', color: 'crimson', textAlign: 'center'}}>
+                {signInError && 'Wrong Username / password!'}
+              </Text>
+              <Text style={[styles.text_footer, { marginTop: 15 }]}>Email</Text>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="user-o"
+                  color="#000830"
                   size={20}
                 />
-                :
-                <Feather
-                  name='eye-off'
-                  color='grey'
+                <TextInput
+                  placeholder='you@email.com'
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  onChangeText={props.handleChange('email')}
+                  value={props.values.email}
+                />
+              </View>
+              <Text style={[styles.text_footer, { marginTop: 35 }]}>Password</Text>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="lock"
+                  color="#000830"
                   size={20}
                 />
-              }
-            </TouchableOpacity>
-          </View>
-          { data.isValidEmail ? null : 
-            <Animatable.View animation="fadeInLeft" duration={500} >
-              <Text style={styles.errorMsg}>Not a valid password!</Text>
+                <TextInput
+                  placeholder='Your-Password'
+                  secureTextEntry={!showPassword}
+                  style={styles.textInput}
+                  autoCapitalize="none"
+                  onChangeText={props.handleChange('password')}
+                  value={props.values.password}
+                />
+                <TouchableOpacity
+                  onPress={()=>{
+                    setShowPassword(!showPassword);
+                  }}
+                >
+                  {showPassword ? 
+                    <Feather
+                      name='eye-off'
+                      color='grey'
+                      size={20}
+                    />
+                    :
+                    <Feather
+                      name='eye'
+                      color='grey'
+                      size={20}
+                    />
+                  }
+                </TouchableOpacity>
+              </View>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  style={[styles.signIn, {
+                    borderColor: '#1af',
+                    borderWidth: 1,
+                    marginTop: 5
+                  }]}
+                  onPress={props.handleSubmit}
+                >
+                  <LinearGradient
+                    colors={['#7ef', '#1af']}
+                    style={styles.signIn}
+                  >
+                  <Text style={styles.textSign}>SIGN IN</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={()=>navigation.navigate('SignUpScreen')}
+                  style={[styles.signIn, {
+                    borderColor: '#1af',
+                    borderWidth: 1,
+                    marginTop: 20
+                  }]}
+                >
+                  <Text style={[styles.textSign, {
+                    color: '#1af'
+                  }]}
+                  >SIGN UP</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text
+                    style={[globalStyles.specialText4, {marginTop: 25}]}
+                    onPress={()=>Alert.alert('Change/Forget Password','This functionality will be available soon!')}
+                  >Change/Forgot Password</Text>
+                </TouchableOpacity>
+              </View>
             </Animatable.View>
-          }
-          <View style={styles.button}>
-            <TouchableOpacity
-              onPress={()=>{loginHandle(data.email, data.password)}}
-              style={[styles.signIn, {
-                borderColor: '#1af',
-                borderWidth: 1,
-                marginTop: 20
-              }]}
-            >
-              <LinearGradient
-                colors={['#7ef', '#1af']}
-                style={styles.signIn}
-              >
-              <Text style={styles.textSign}>SIGN IN</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={()=>navigation.navigate('SignUpScreen')}
-              style={[styles.signIn, {
-                borderColor: '#1af',
-                borderWidth: 1,
-                marginTop: 20
-              }]}
-            >
-              <Text style={[styles.textSign, {
-                color: '#1af'
-              }]}
-              >SIGN UP</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
-                style={[globalStyles.specialText4, {marginTop: 25}]}
-                onPress={()=>Alert.alert('Change/Forget Password','This functionality will be available soon!')}
-              >Change/Forgot Password</Text>
-            </TouchableOpacity>
-          </View>
-        </Animatable.View>
-      </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        )}
+      </Formik>
     </View>
   )
 }
@@ -232,7 +175,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 40,
   },
   signIn: {
     width: '100%',
