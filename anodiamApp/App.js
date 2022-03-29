@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useReducer } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
@@ -55,15 +55,17 @@ export default function App() {
     }
   };
 
-  const [loginState, dispatch] = React.useReducer(loadingReducer, initialLoginState);
+  const [loginState, dispatch] = useReducer(loadingReducer, initialLoginState);
 
   const authContext = useMemo(() => ({
     signIn: async(userName, password) => {
       let userToken = null;
+// Check this from database via Rest API login microservice and assign the user token that gets returned by the REST API to the userToken variable below
       if( userName == 'user' && password == 'pass' ) {
         try {
           userToken = 'sw21x3452herfhergvnfnverh';
-          await AsyncStorage.setItem('userToken', userToken)
+          await AsyncStorage.setItem('userToken', userToken);
+          await AsyncStorage.setItem('userName', userName);
         } catch(e) {
           console.log(e);
         }
@@ -107,6 +109,7 @@ export default function App() {
     return (
       <AuthContext.Provider value={authContext}>
         <NavigationContainer>
+          {/* LOGIN ERROR LOGIC GOES HERE */}
           { loginState.userToken != null ?
             <MainContainerScreen/>
           :
